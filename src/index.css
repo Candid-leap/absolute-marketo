@@ -130,15 +130,15 @@
 
 .mktoField {
   color: var(--text-color--text-black);
-  background-color: #0000;
+  background-color: #fff;
   border: 1px solid #cccc;
   border-radius: .25rem;
   min-height: 3rem;
   margin-bottom: .75rem;
-  padding: .5rem 1rem;
+  padding: 16px !important;
   width: 100% !important;
   font-family: Graphik, sans-serif;
-  font-size: 1rem !important;
+  font-size: 1rem;
   line-height: 1.5;
 }
 
@@ -301,16 +301,44 @@ select.mktoField {
   width: 100% !important;
 }
 
-.mktoFormRow:has(input[name="Opt_In__c"]) .mktoFieldDescriptor {
-  flex-direction: row !important;
-  display: flex;
-  align-items: center;
-  width: 100% !important;
-}
-
 .mktoFormRow:has(input[name="Opt_In__c"]) .mktoLogicalField {
   display: flex !important;
   flex-direction: row !important;
   align-items: center;
-  gap: 8px;
+} 
+
+.mktoForm .mktoRadioList > label, .mktoForm .mktoCheckboxList > label {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  margin-left: 0rem !important;
+  gap: 0.5rem;
+}
+
+.mktoFormRow:has(select[name="Country"]) {
+  grid-column: span 2 !important;
+  width: 100% !important;
+}
+
+.mktoFormRow:has(select[name="Country"]) .mktoFieldDescriptor {
+  width: 100% !important;
+}
+
+.mktoFormRow:has(select[name="Country"]) select {
+  width: 100% !important;
+  min-height: 3rem;
+  padding: 0.75rem 1rem !important;
+  background-position: right 1rem center;
+  background-size: 0.75rem;
+  border: 1px solid #cccccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color--text-black);
+}
+
+#mktoCheckbox_4706_0:checked {
+  accent-color: #30a46c !important;
+  background-color: #30a46c !important;
+  border-color: #30a46c !important;
 }
