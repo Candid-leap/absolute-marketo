@@ -108,7 +108,7 @@ function ValidateQuoteFormAndRedirect(e) {
       showError(ErrorElements.PartnerDob, "Age must be 18 years or older.");
       hasError = true;
     }
-    
+
     if (!partnerGenderValue) {
       showError(ErrorElements.PartnerGender);
       hasError = true;
@@ -124,6 +124,20 @@ function ValidateQuoteFormAndRedirect(e) {
     return;
   }
 
+  // Get current URL parameters and filter out UTM params
+  const currentUrlParams = new URLSearchParams(window.location.search);
+  const filteredParams = Array.from(currentUrlParams.entries())
+    .filter(([key]) => !key.toLowerCase().startsWith('utm_'))
+    .reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, string>);
+
+  // Convert filtered params back to query string
+  const existingQueryParams = Object.entries(filteredParams)
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&');
+
   // Build query string
   let queryString = `birthdate=${selfDobValue}&smoker=${selfSmokerValue}&gender=${selfGenderValue === 'male' ? 'M' : 'F'}`;
 
@@ -131,8 +145,10 @@ function ValidateQuoteFormAndRedirect(e) {
     queryString += `&partner=true&partner_smoker=${partnerSmokerValue}&partner_birthdate=${partnerDobValue}&partner_gender=${partnerGenderValue === 'male' ? 'M' : 'F'}`;
   }
 
-
-  // Construct and open URL in new tab
+  if(existingQueryParams) {
+    queryString += `&${existingQueryParams}`;
+  }
+  
   const redirectUrl = `${BASE_URL}${folder}/life-insurance-quotes-continued?${queryString}`;
   window.open(redirectUrl, '_blank');
 }
