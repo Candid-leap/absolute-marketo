@@ -37,7 +37,7 @@ function showError(errorType: string, message?: string) {
   }
 }
 
-function isAgeValid(dob: string): boolean {
+function isAgeValid(dob: string): { isValid: boolean; age: number; errorMessage: string } {
     const day = parseInt(dob.substring(0, 2));
     const month = parseInt(dob.substring(2, 4)) - 1; // Months are 0-based in JS
     const year = parseInt(dob.substring(4, 8));
@@ -53,12 +53,18 @@ function isAgeValid(dob: string): boolean {
       age--;
     }
 
-    return age >= 18;
+    const errorMessage = age > 75 ? "Age must be 75 years or under." : age < 18 ? "Age must be 18 years or older." : "";
+
+    return {
+      isValid: age >= 18 && age <= 75,
+      age: age,
+      errorMessage: errorMessage
+    };
   }
 
 function ValidateQuoteFormAndRedirect(e) {
   resetAllErrors();
-  const BASE_URL = "https://www.policyme.com/life/";
+    const BASE_URL = `${window.location.origin}/life/`;
   let folder = (e.target as HTMLFormElement).getAttribute('folder') || 'life';
   e.preventDefault();
   e.stopPropagation();
@@ -81,9 +87,8 @@ function ValidateQuoteFormAndRedirect(e) {
     showError(ErrorElements.SelfDob);
     hasError = true;
   }
-
-  if(selfDobValue && !isAgeValid(selfDobValue)) {
-    showError(ErrorElements.SelfDob, "Age must be 18 years or older.");
+  if(selfDobValue && !isAgeValid(selfDobValue).isValid) {
+    showError(ErrorElements.SelfDob, isAgeValid(selfDobValue).errorMessage);
     hasError = true;
   }
 
@@ -104,8 +109,8 @@ function ValidateQuoteFormAndRedirect(e) {
       hasError = true;
     }
 
-    if(partnerDobValue && !isAgeValid(partnerDobValue)) {
-      showError(ErrorElements.PartnerDob, "Age must be 18 years or older.");
+    if(partnerDobValue && !isAgeValid(partnerDobValue).isValid) {
+      showError(ErrorElements.PartnerDob, isAgeValid(partnerDobValue).errorMessage);
       hasError = true;
     }
 
