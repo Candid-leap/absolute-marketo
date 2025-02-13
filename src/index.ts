@@ -17,11 +17,20 @@ enum ErrorElements {
   PartnerSmoke = '[pm-element=partner-smoke-error]'
 }
 
+function getLocale() {
+  const html = document.documentElement;
+  return html.getAttribute('lang');
+}
+
 function resetAllErrors() {
   const errorElements = document.querySelectorAll('.form-group_error');
   errorElements.forEach((element) => {
     if (element instanceof HTMLElement) {
-      element.innerText = "Required Field";
+      if(getLocale() === 'fr-CA') {
+        element.innerText = "Champ requis";
+      } else {
+        element.innerText = "Required Field";
+      }
       element.style.display = 'none';
     }
   });
@@ -53,7 +62,10 @@ function isAgeValid(dob: string): { isValid: boolean; age: number; errorMessage:
       age--;
     }
 
-    const errorMessage = age > 75 ? "Age must be 75 years or under." : age < 18 ? "Age must be 18 years or older." : "";
+    let errorMessage = age > 75 ? "Age must be 75 years or under." : age < 18 ? "Age must be 18 years or older." : "";
+    if(getLocale() === 'fr-CA') {
+      errorMessage = age > 75 ? "L'âge doit être de 75 ans ou moins." : age < 18 ? "L'âge doit être de 18 ans ou plus." : "";
+    }
 
     return {
       isValid: age >= 18 && age <= 75,
