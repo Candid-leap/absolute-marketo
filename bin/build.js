@@ -7,7 +7,7 @@ const BUILD_DIRECTORY = 'dist';
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 // Config entrypoint files
-const ENTRY_POINTS = ['src/index.css'];
+const ENTRY_POINTS = ['src/index.ts', 'src/index.css'];
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;
@@ -19,7 +19,7 @@ const context = await esbuild.context({
   bundle: true,
   entryPoints: ENTRY_POINTS,
   outdir: BUILD_DIRECTORY,
-  minify: PRODUCTION,
+  minify: false,
   sourcemap: !PRODUCTION,
   target: PRODUCTION ? 'es2020' : 'esnext',
   inject: LIVE_RELOAD ? ['./bin/live-reload.js'] : undefined,
