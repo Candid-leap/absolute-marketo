@@ -36,15 +36,17 @@ window.Webflow.push(() => {
 
             if (!dropzone) {
                 featuredContainer.remove();
-                throw new Error('No dropzone found');
+                console.log('No dropzone found, removed from DOM');
+                return;
             }
 
             if (listItems.length === 0) {
                 featuredContainer.remove();
-                throw new Error('No list items found');
+                console.log('No list items found, removed from DOM');
+                return;
             }
-
-            listItems.forEach(listItem => {
+            // Only append first 3 items
+            Array.from(listItems).slice(0, 3).forEach(listItem => {
                 const clonedItem = listItem.cloneNode(true);
                 dropzone.appendChild(clonedItem);
             });
@@ -52,7 +54,7 @@ window.Webflow.push(() => {
             return true;
 
         } catch (error) {
-            console.error('Error processing container:', error);
+            console.log(error);
             return false;
         }
     });
