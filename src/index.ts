@@ -2,8 +2,92 @@
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-    console.log('Marketo Forms Script is here');
-    // Create and load the Marketo Forms 2 script
+    console.log('AS Marketo Forms Script is here');
+
+    const isShowQueryPresent = window.location.search.includes('show');
+
+    if (isShowQueryPresent) {
+        console.log('Show query detected, showing all elements');
+        removeAllFormGroupWrappers();
+        showElements();
+        hideElements();
+        applyQueryActionOnElements();
+        return;
+    }
+
+    const divWithGatedPageAttribute = document.querySelector('div[is-gated-page]');
+
+    if (!divWithGatedPageAttribute) {
+        console.log('No gated page div found, rendering normally');
+        loadMarketoScriptForms();
+        return;
+    }
+
+    if (divWithGatedPageAttribute.getAttribute('is-gated-page') === 'false') {
+        console.log('Ungated page detected, checking webinar type');
+        const isLiveWebinar = isLiveWebinarPage();
+        if (isLiveWebinar) {
+            console.log('Live webinar detected, loading form 1024 and showing allelements');
+            removeFormGroupWrapperbyId('1001');
+            loadMarketoScriptForms();
+            showElements();
+            hideElements();
+        } else {
+            console.log(
+                'On-demand webinar detected, removing all form group wrappers and showing all elements'
+            );
+            removeAllFormGroupWrappers();
+            showElements();
+            hideElements();
+        }
+    }
+
+    if (divWithGatedPageAttribute.getAttribute('is-gated-page') === 'true') {
+        console.log('Gated page detected,');
+        if (isLiveWebinarPage()) {
+            // remvoing on demand form
+            console.log('Live webinar detected, removing on demand form and loading form 1024');
+            removeFormGroupWrapperbyId('1001');
+        } else {
+            // removing live form
+            console.log('On-demand webinar detected, removing live form and loading form 1001');
+            removeFormGroupWrapperbyId('1024');
+        }
+        loadMarketoScriptForms();
+    }
+});
+
+function removeFormGroupWrapperbyId(id: string) {
+    const formGroupWrapper = document.querySelector(
+        `div[as-element="form-group-wrapper"][formid="${id}"]`
+    );
+    if (formGroupWrapper) {
+        formGroupWrapper.remove();
+    }
+}
+
+function isLiveWebinarPage(): boolean {
+    const webinarEventTypeDiv = document.querySelector('div[id="webinar-event-type"]');
+    if (!webinarEventTypeDiv) {
+        console.log('No webinar event type div found');
+        return false;
+    }
+
+
+    const liveWebinarDiv = webinarEventTypeDiv.querySelector('div[id="live-webinar"]');
+    const onDemandWebinarDiv = webinarEventTypeDiv.querySelector('div[id="on-demand-webinar"]');
+
+    if (!liveWebinarDiv || !onDemandWebinarDiv) {
+        console.log('Missing webinar type indicators');
+        return false;
+    }
+
+    const isLive = !liveWebinarDiv.classList.contains('w-condition-invisible');
+    console.log(`Webinar type: ${isLive ? 'Live' : 'On-Demand'}`);
+    return isLive;
+}
+
+function loadMarketoScriptForms() {
     const script1 = document.createElement('script');
     script1.src = '//go.absolute.com/js/forms2/js/forms2.min.js';
     document.body.appendChild(script1);
@@ -22,79 +106,127 @@ window.Webflow.push(() => {
             console.error('Error: MktoForms2 is not loaded');
         }
     };
-});
+}
 
 function getAllFormDivs(): NodeListOf<Element> {
     const formDivs = document.querySelectorAll('div[as-element="formdiv"]');
     return formDivs;
 }
 
-
-function getFormElementById(formid: number, div: Element) {
-
-}
-
-
 function loadForm(formid: number, div: Element) {
     const formElement = document.createElement('form');
     formElement.id = `mktoForm_${formid}`;
     div.appendChild(formElement);
-    MktoForms2.loadForm("//go.absolute.com", "258-HSL-350", formid)
-        .whenReady((form: any) => {
-            form.onSuccess((callback: any) => {
+    MktoForms2.loadForm('//go.absolute.com', '258-HSL-350', formid).whenReady((form: any) => {
+        form.onSuccess((callback: any) => {
+            // Form submission succeeded
+            console.log('Form submitted successfully');
+            // Get the form ID from the submitted form
+            const submittedFormId = form.getId();
 
-                // Form submission succeeded
-                console.log("Form submitted successfully");
-                // Get the form ID from the submitted form
-                const submittedFormId = form.getId();
+            // Find the corresponding form div
+            const formDiv = document.querySelector(
+                `div[as-element="formdiv"][formid="${submittedFormId}"]`
+            );
 
-                // Find the corresponding form div
-                const formDiv = document.querySelector(`div[as-element="formdiv"][formid="${submittedFormId}"]`);
-
-                if (formDiv) {
-                    // Find success section and form elements
-                    const successSection = formDiv.querySelector('[as-element="sucess-section"]');
-                    const formElement = formDiv.querySelector(`#mktoForm_${submittedFormId}`);
-                    if (successSection instanceof HTMLElement) {
-                        successSection.style.setProperty('display', 'block', 'important');
-                    }   
-                    if (formElement instanceof HTMLElement) {
-                        formElement.style.setProperty('display', 'none', 'important');
-                    }
-                }
-                // Find all elements with onFormSubmit="hide" and add hide class
-                const elementsToHide = document.querySelectorAll('[as-formaction="hide"]') as NodeListOf<HTMLElement>;
-                elementsToHide.forEach((element) => {
-                    element.style.setProperty('display', 'none', 'important');
-                });
-
-                // Find all elements with onFormSubmit="show" and remove hide class
-                const elementsToShow = document.querySelectorAll('[as-formaction="show"]') as NodeListOf<HTMLElement>;
-                elementsToShow.forEach((element) => {
-                    if (element.hasAttribute('as-display')) {
-                        element.style.setProperty('display', element.getAttribute('as-display') || 'block', 'important');
+            if (formDiv) {
+                // Find success section and form elements
+                const successSection = formDiv.querySelector('[as-element="sucess-section"]');
+                const formElement = formDiv.querySelector(`#mktoForm_${submittedFormId}`);
+                if (successSection instanceof HTMLElement) {
+                    if (successSection.hasAttribute('as-display')) {
+                        successSection.style.setProperty(
+                            'display',
+                            successSection.getAttribute('as-display') || 'block',
+                            'important'
+                        );
                     } else {
-                        element.style.setProperty('display', 'block', 'important');
+                        successSection.style.setProperty('display', 'block', 'important');
                     }
-                });
-
-                const scrollElement = document.querySelector('[as-scrollto="true"]') as HTMLElement;
-                if (scrollElement instanceof HTMLElement) {
-                    scrollElement.scrollIntoView({ behavior: 'smooth' });
                 }
-                return false;
-                // Return false to prevent the submission from continuing
-            });
+                if (formElement instanceof HTMLElement) {
+                    formElement.style.setProperty('display', 'none', 'important');
+                }
+            }
 
-            form.onSubmit((callback: any) => {
-                // Hide Marketo form after submission
-                form.getFormElem().hide();
-                return false;
-            });
+            hideElements(true);
+            showElements(true, true);
+
+            const scrollElement = document.querySelector('[as-scrollto="true"]') as HTMLElement;
+            if (scrollElement instanceof HTMLElement) {
+                scrollElement.scrollIntoView({ behavior: 'smooth' });
+            }
+            return false;
+            // Return false to prevent the submission from continuing
         });
-}
 
+        form.onSubmit((callback: any) => {
+            // Hide Marketo form after submission
+            form.getFormElem().hide();
+            return false;
+        });
+    });
+}
 
 function getFormId(div: HTMLElement): number {
     return parseInt(div.getAttribute('formid') || '', 10);
+}
+
+function hideElements(hideElementOfFormGroupWrapper: boolean = false) {
+    const elementsToHide = document.querySelectorAll(
+        '[as-formaction="hide"]'
+    ) as NodeListOf<HTMLElement>;
+    elementsToHide.forEach((element) => {
+        const parentFormGroupWrapper = element.closest('[as-element="form-group-wrapper"]');
+        if (parentFormGroupWrapper && !hideElementOfFormGroupWrapper) {
+            return;
+        }
+        element.style.setProperty('display', 'none', 'important');
+    });
+}
+
+function showElements(showFormSuccess: boolean = false, showElementOfFormGroupWrapper: boolean = false) {
+    const elementsToShow = document.querySelectorAll(
+        '[as-formaction="show"]'
+    ) as NodeListOf<HTMLElement>;
+
+    elementsToShow.forEach((element) => {
+        const parentFormGroupWrapper = element.closest('[as-element="form-group-wrapper"]');
+        if (parentFormGroupWrapper && !showElementOfFormGroupWrapper) {
+            return;
+        }
+        // Skip success section elements unless showFormSuccess is true
+        if (element.getAttribute('as-element') === 'sucess-section' && !showFormSuccess) {
+            return;
+        }
+
+        if (element.hasAttribute('as-display')) {
+            element.style.setProperty(
+                'display',
+                element.getAttribute('as-display') || 'block',
+                'important'
+            );
+        } else {
+            element.style.setProperty('display', 'block', 'important');
+        }
+    });
+}
+
+function removeAllFormGroupWrappers() {
+    const formGroupWrappers = document.querySelectorAll('div[as-element="form-group-wrapper"]');
+    formGroupWrappers.forEach((formGroupWrapper) => {
+        formGroupWrapper.remove();
+    });
+}
+
+function applyQueryActionOnElements() {
+    const queryActionElementsToShow = document.querySelectorAll('[as-queryaction="show"]') as NodeListOf<HTMLElement>;
+    queryActionElementsToShow.forEach((element) => {
+        element.style.setProperty('display', 'block', 'important');
+    });
+
+    const queryActionElementsToHide = document.querySelectorAll('[as-queryaction="hide"]') as NodeListOf<HTMLElement>;
+    queryActionElementsToHide.forEach((element) => {
+        element.style.setProperty('display', 'none', 'important');
+    });
 }
