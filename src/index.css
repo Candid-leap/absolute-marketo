@@ -128,8 +128,6 @@
     box-shadow: none;
   }
 
-
-
 .mktoField:placeholder {
   color: #757575  !important;
 }
@@ -137,7 +135,7 @@
 .mktoField {
   color: var(--text-color--text-black);
   background-color: #fff;
-  border: 1px solid #cccc;
+  border: 1px solid #ccc !important;
   border-radius: .25rem;
   min-height: 3rem;
   margin-bottom: .75rem;
@@ -188,7 +186,6 @@
 }
 
 select.mktoField,
-.mktoFormRow:has(select[name="Country"]) select,
 .mktoFormRow select {
   -moz-appearance: none !important;
   -webkit-appearance: none !important;
@@ -289,12 +286,6 @@ select.mktoField,
   .mktoButtonRow {
     grid-column: 1 / -1 !important; /* Full width on mobile */
   }
-
-  /* Make the Country select input row take full width */
-  .mktoFormRow:has(select[name="Country"]) {
-    grid-column: span 2 !important;
-    width: 100% !important;
-  }
   
 }
 
@@ -330,15 +321,6 @@ select.mktoField,
   gap: 0.5rem;
 }
 
-.mktoFormRow:has(select[name="Country"]) {
-  grid-column: span 2 !important;
-  width: 100% !important;
-}
-
-.mktoFormRow:has(select[name="Country"]) .mktoFieldDescriptor {
-  width: 100% !important;
-}
-
 #mktoCheckbox_4706_0:checked {
   accent-color: #30a46c !important;
   background-color: #30a46c !important;
@@ -346,10 +328,36 @@ select.mktoField,
 }
 
 select.mktoField:focus,
-.mktoFormRow:has(select[name="Country"]) select:focus,
 .mktoFormRow select:focus {
   outline: none !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   border: 1px solid var(--Grey-Light-1100, #6A716E) !important;
 }
+
+.mktoFormRow:has(select[name="Country"]) {
+  grid-column: span 1 !important;
+  width: 100% !important;
+}
+
+@media screen and (max-width: 768px) {
+  .mktoFormRow:has(select[name="Country"]) {
+    grid-column: 1 / -1 !important;
+  }
+}
+
+
+.mktoInstruction {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+
+

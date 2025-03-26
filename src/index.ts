@@ -25,6 +25,14 @@ window.Webflow.push(() => {
 
     if (divWithGatedPageAttribute.getAttribute('is-gated-page') === 'false') {
         console.log('Ungated page detected, checking webinar type');
+        if (!isWebinarPage()) {
+            console.log('Webinar page detected, loading form 1001');
+            removeAllFormGroupWrappers();
+            showElements();
+            hideElements();
+            applyQueryActionOnElements();
+            return;
+        }
         const isLiveWebinar = isLiveWebinarPage();
         if (isLiveWebinar) {
             console.log('Live webinar detected, loading form 1024 and showing allelements');
@@ -66,13 +74,22 @@ function removeFormGroupWrapperbyId(id: string) {
     }
 }
 
-function isLiveWebinarPage(): boolean {
+function isWebinarPage() {
     const webinarEventTypeDiv = document.querySelector('div[id="webinar-event-type"]');
     if (!webinarEventTypeDiv) {
-        console.log('No webinar event type div found');
+        console.log('No webinar Page detected');
         return false;
     }
+    return true;
+}
 
+function isLiveWebinarPage(): boolean {
+    const webinarEventTypeDiv = document.querySelector('div[id="webinar-event-type"]');
+
+    if (!webinarEventTypeDiv) {
+        //  console.log('No webinar Page detected');
+        return false;
+    }
 
     const liveWebinarDiv = webinarEventTypeDiv.querySelector('div[id="live-webinar"]');
     const onDemandWebinarDiv = webinarEventTypeDiv.querySelector('div[id="on-demand-webinar"]');
@@ -156,9 +173,24 @@ function loadForm(formid: number, div: Element) {
             if (scrollElement instanceof HTMLElement) {
                 scrollElement.scrollIntoView({ behavior: 'smooth' });
             }
+
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'marketo-form-submitted',
+                form: formid
+            });
+
             return false;
             // Return false to prevent the submission from continuing
         });
+
+       
+        // Update submit button text if it exists
+        const submitButton = div.getAttribute('form-submittext');
+        if (submitButton) {
+            form.getFormElem().find('button[type="submit"]').text(submitButton);
+        }
+    
 
         form.onSubmit((callback: any) => {
             // Hide Marketo form after submission
