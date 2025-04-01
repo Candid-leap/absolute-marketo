@@ -1,0 +1,426 @@
+backup.css
+<style> 
+.mktoForm .mktoOffset,
+.mktoForm .mktoGutter {
+  display: none;
+}
+
+.mktoForm .mktoRequiredField .mktoAsterix {
+  display: none !important;
+}
+
+.mktoForm {
+  width: 100% !important;
+  max-width: 800px !important;
+  margin: 0 auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-column-gap: 1.5rem !important;
+}
+
+.mktoFormRow .mktoHtmlText {
+  font-size: 1rem;
+}
+
+.mktoForm .mktoFieldWrap {
+  width: 100% !important;
+  float: none !important;
+}
+
+.mktoFormRow a {
+  padding: 0;
+  color: var(--_colors---text--green);
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.mktoFormRow.full-width {
+  grid-column: auto !important;
+  grid-column-start: auto !important;
+  grid-column-end: auto !important;
+  width: 100% !important;
+}
+
+.mktoButtonRow {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.mktoForm .mktoError .mktoErrorMsg {
+  background-color: #4353ff !important;
+  background-image: none !important;
+  color: #fff !important;
+  border: #4353ff solid 1px !important;
+  text-shadow: none !important;
+  -webkit-box-shadow: 1px 2px 6px -1px rgba(0, 0, 0, 0.55) !important;
+  box-shadow: 1px 2px 6px -1px rgba(0, 0, 0, 0.55) !important;
+  padding: 10px !important;
+  font-family: var(--text-color--text-font--text), sans-serif;
+}
+
+.mktoForm .mktoError .mktoErrorArrow {
+  background-color: #4353ff !important;
+  border: #4353ff solid 1px !important;
+}
+
+.mktoForm .mktoLabel {
+  -webkit-text-size-adjust: 100% !important;
+  font-family: var(--_typography---font-family--paragraph) !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
+  color: var(--_colors---text--primary) !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  margin-bottom: 0.25rem !important;
+  font-weight: var(--_typography---font-weight--text-normal) !important;
+  width: 100% !important;
+}
+
+.mktoFormRow > .mktoFieldDescriptor.mktoFormCol {
+  width: 100%;
+  margin-bottom: 0px !important;
+}
+
+.mktoLogicalField.mktoCheckboxList.mktoHasWidth {
+  width: auto !important;
+}
+
+.mktoField:placeholder {
+  color: #757575 !important;
+}
+
+.mktoField {
+  color: var(--_colors---text--primary);
+  background-color: var(--_colors---background--primary);
+  border: 1px solid var(--_colors---highlight--200);
+  border-radius: 0.25rem;
+  min-height: 3rem;
+  margin-bottom: 0.75rem;
+  width: 100% !important;
+  font-family: var(--_typography---font-family--paragraph);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.mktoField:hover {
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.mktoField:focus {
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border-color: var(--_colors---icon--neutral) !important;
+}
+
+.mktoCheckboxList input,
+.mktoForm .mktoCheckboxList > input {
+  border-color: var(--background-color--background-success);
+  background-color: var(--background-color--background-success);
+  background-size: 90%;
+  border-radius: 0.125rem;
+  width: 0.875rem !important;
+  height: 0.875rem !important;
+  margin: 0 0.5rem 0 0;
+}
+
+.mktoCheckboxList input:checked,
+.mktoForm .mktoCheckboxList > input:checked {
+  background-color: #4cc38a !important;
+  border-color: #4cc38a !important;
+}
+
+.mktoForm .mktoFieldWrap .mktoInstruction {
+  display: initial !important;
+}
+
+.mktoCheckboxList > .mktoField {
+  width: 20px !important;
+  height: 20px;
+}
+
+select.mktoField {
+  -moz-appearance: none;
+  /* Firefox */
+  -webkit-appearance: none;
+  /* Safari and Chrome */
+  appearance: none;
+  background-image: url("https://cdn.prod.website-files.com/66459e52a38339f2998b9eef/667a38488b9c617816f89a19_chevron-down.svg");
+  background-position: 96%;
+  background-size: 1.25rem;
+  background-repeat: no-repeat;
+  padding-right: 2rem;
+}
+
+select.mktoField[multiple="multiple"] {
+  background-image: none;
+}
+
+.mktoButtonWrap.mktoSimple {
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: start !important;
+}
+
+.mktoInstruction {
+  font-size: 0.94rem;
+}
+
+.mktoLogicalField.mktoCheckboxList.mktoHasWidth {
+  padding: 0px !important;
+  margin-right: 8px;
+}
+
+#LblGated_Content_Opt_In__c {
+  display: block;
+  padding: 6px 0 0 4px;
+  cursor: pointer;
+}
+
+.mktoHtmlText > a {
+  text-decoration: underline;
+}
+
+.mktoFormRow .mktoHtmlText.mktoHasWidth {
+  width: 100% !important;
+}
+
+/* Hide server-side (from Marketo) reCaptcha disclaimer */
+.mktoCaptchaDisclaimer {
+  display: none;
+}
+
+/* Hide client-side recaptcha badge */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+/* MOBILE */
+@media screen and (max-width: 489px) {
+  .mktoForm {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mktoFormRow,
+  .mktoButtonRow {
+    grid-column: 1 / -1 !important;
+  }
+
+  .mktoForm input[type="url"],
+  .mktoForm input[type="text"],
+  .mktoForm input[type="date"],
+  .mktoForm input[type="tel"],
+  .mktoForm input[type="email"],
+  .mktoForm input[type="number"],
+  .mktoForm textarea.mktoField,
+  .mktoForm select.mktoField {
+    height: 56px !important;
+  }
+}
+
+/* Ensure button row is full width and align button to the left */
+.mktoButtonRow {
+  grid-column: 1 / -1 !important; /* Span full width */
+  width: 100% !important;
+  text-align: left !important; /* Align button to the left */
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 489px) {
+  .mktoForm {
+    grid-template-columns: 1fr !important; /* Single column on mobile */
+  }
+
+  .mktoFormRow,
+  .mktoButtonRow {
+    grid-column: 1 / -1 !important; /* Full width on mobile */
+  }
+
+  /* Make the Country select input row take full width */
+  .mktoFormRow:has(select[name="Country"]) {
+    grid-column: span 2 !important;
+    width: 100% !important;
+  }
+}
+
+.subtitle {
+  font-family: var(--text-color--text-font--heading) !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  grid-column: 1 / -1 !important; /* Spans full width */
+  width: 100% !important;
+}
+
+.mktoFormRow:has(input[name="Opt_In__c"]) {
+  grid-column: span 2 !important;
+  display: flex;
+  flex-direction: row !important;
+  align-items: center;
+  width: 100% !important;
+}
+
+.mktoFormRow:has(input[name="Opt_In__c"]) .mktoLogicalField {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.mktoForm .mktoRadioList > label,
+.mktoForm .mktoCheckboxList > label {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: 0rem !important;
+  gap: 0.25rem !important;
+  font-family: var(--_typography---font-family--paragraph) !important;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+.mktoForm .mktoCheckboxList > label a {
+	text-decoration-color: var(--_colors---text--green) !important;
+}
+
+.mktoFormRow:has(select[name="Country"]),
+.mktoFormRow:has(select[name="Product_Interest__c"]) {
+  grid-column: span 2 !important;
+  width: 100% !important;
+}
+
+.mktoFormRow:has(select[name="Country"]) .mktoFieldDescriptor {
+  width: 100% !important;
+}
+
+.mktoFormRow select {
+  width: 100% !important;
+  min-height: 3rem;
+  background-position: right 1rem center;
+  border: 1px solid #cccccc;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color--text-black);
+}
+
+.mktoField[type="checkbox"]:checked {
+  accent-color: #30a46c !important;
+  background-color: #30a46c !important;
+  border-color: #30a46c !important;
+}
+
+.mktoField[type="checkbox"] {
+	transform: translateY(0px);
+  min-height: auto !important;
+}
+
+.mktoForm .mktoField {
+  font-size: 1rem;
+  line-height: 1.5ch;
+}
+
+/* Target all Marketo multi-select dropdowns */
+select.mktoField[multiple] {
+  width: 100% !important;
+}
+
+/* Style for the options - just basic padding */
+select.mktoField[multiple] option {
+  padding: 8px;
+}
+
+select.mktoField[multiple] option:checked {
+  border-radius: 0.25rem;
+  background-color: #bad6fb;
+}
+
+/* Only keeping a subtle focus state for accessibility */
+select.mktoField[multiple]:focus {
+  outline: none;
+  border-color: #ccc;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.mktoForm input[type="text"],
+.mktoForm input[type="url"],
+.mktoForm input[type="email"],
+.mktoForm input[type="tel"],
+.mktoForm input[type="number"],
+.mktoForm input[type="date"],
+.mktoForm textarea.mktoField,
+.mktoForm select.mktoField {
+  padding: 8px;
+}
+
+.mktoForm input[type="text"],
+.mktoForm input[type="url"],
+.mktoForm input[type="email"],
+.mktoForm input[type="tel"],
+.mktoForm input[type="number"],
+.mktoForm input[type="date"],
+.mktoForm select {
+  margin: 0.25rem 0rem 0.5rem 0rem;
+}
+
+.is-2col .mktoForm {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.is-1col .mktoForm {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+@media (max-width: 478px) {
+	.mktoCheckboxList > label {
+  	flex-wrap: wrap;
+  }
+  
+  .mktoField[type="checkbox"] {
+  	transform: translateY(-15px);
+  }
+}
+</style>
+
+<!-- Button Style -->
+<style>
+.mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
+  font-family: var(--_typography---font-family--paragraph) !important;
+  height: auto !important;
+  border: none !important;
+  color: var(--_button-colors---primary--content);
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--_button-colors---primary--background) !important;
+  background-image: none !important;
+  border: none !important;
+  border-radius: var(--radius--xsmall);
+  flex: none;
+  padding: var(--_spacing---global-spacers--xsmall) var(--_spacing---global-spacers--small) !important;
+  font-size: var(--_typography---font-size--paragraph-regular) !important;
+  font-weight: var(--_typography---font-weight--text-semibold) !important;
+  line-height: var(--_typography---line-height--1-2);
+  text-decoration: none;
+  transition: background-color 0.35s ease;
+  display: inline-block;
+  box-shadow: none;
+  margin-top: 1rem;
+}
+
+.mktoForm .mktoButtonWrap.mktoSimple .mktoButton:hover {
+  background-color: var(--colors--green--hunter-green) !important;
+}
+
+@media (max-width: 991px) {
+	.mktoForm .mktoButtonWrap.mktoSimple .mktoButton {
+    width: 100%;
+  }
+}
+</style>
+

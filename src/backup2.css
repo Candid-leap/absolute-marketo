@@ -380,27 +380,12 @@ select.mktoField:focus,
   flex-wrap: wrap;
   align-items: center;
   margin-left: 0rem !important;
-  font-size: 1rem !important;
+  gap: 0.25rem !important;
+  font-family: var(--_typography---font-family--paragraph) !important;
 }
 
-.mktoForm .mktoCheckboxList > label > a {
-  margin-left: 4px !important;
-}
-
-
-.mktoForm .mktoCheckboxList > label > a[href*="privacy"] {
-  margin-left: 4px !important;
-  margin-right: 4px !important;
-}
-
-.mktoField[type="checkbox"]:checked {
-  accent-color: #30a46c !important;
-  background-color: #30a46c !important;
-  border-color: #30a46c !important;
-}
 
 .mktoField[type="checkbox"] {
-  transform: translateY(-2px);
+	transform: translateY(0px);
   min-height: auto !important;
 }
-

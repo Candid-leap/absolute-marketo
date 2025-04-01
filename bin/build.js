@@ -15,6 +15,10 @@ const ENTRY_POINTS = [
   'src/downloadPDFScript.ts',
   'src/stickyForms.ts',
   'src/keyHighlights.ts',
+  'src/resourceHeader.ts',
+  'src/gloabalExternalLinks.ts',
+  'src/breadcrumb.ts',
+  'src/levy.ts',
 ];
 
 // Config dev serving

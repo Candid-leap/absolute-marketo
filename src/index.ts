@@ -40,6 +40,7 @@ window.Webflow.push(() => {
             loadMarketoScriptForms();
             showElements();
             hideElements();
+            applyQueryActionOnElements();
         } else {
             console.log(
                 'On-demand webinar detected, removing all form group wrappers and showing all elements'
@@ -47,6 +48,7 @@ window.Webflow.push(() => {
             removeAllFormGroupWrappers();
             showElements();
             hideElements();
+            applyQueryActionOnElements()
         }
     }
 
@@ -171,7 +173,8 @@ function loadForm(formid: number, div: Element) {
 
             const scrollElement = document.querySelector('[as-scrollto="true"]') as HTMLElement;
             if (scrollElement instanceof HTMLElement) {
-                scrollElement.scrollIntoView({ behavior: 'smooth' });
+                // disable scroll sitewide
+               // scrollElement.scrollIntoView({ behavior: 'smooth' });
             }
 
             window.dataLayer = window.dataLayer || [];
