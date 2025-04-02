@@ -9,9 +9,9 @@ window.Webflow.push(() => {
     if (isShowQueryPresent) {
         console.log('Show query detected, showing all elements');
         removeAllFormGroupWrappers();
+        applyQueryActionOnElements();
         showElements();
         hideElements();
-        applyQueryActionOnElements();
         return;
     }
 

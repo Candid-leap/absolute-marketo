@@ -4,34 +4,38 @@ window.Webflow ||= [];
 window.Webflow.push(() => {
 
     const readMoreButtons = document.querySelectorAll('a[data-element="readmore"]');
-
-    console.log(readMoreButtons);
-
     readMoreButtons.forEach((button) => {
 
         if (button.getAttribute('data-extlink') !== "" && button.getAttribute('data-extlink') !== "#") {
-            console.log('not a link');
             return;
         }
         button.addEventListener('click', (e) => {
-            console.log('clicked');
             setModalItem(e);
             openModal();
         });
     });
+    const modalElement = document.querySelector('section[data-element="modal"]');
+    const closeButton = document.querySelectorAll('[data-element="close-button"]');
 
-
+    if (modalElement) {
+        modalElement.addEventListener('click', (e) => {
+            // Check if click was directly on modal background (not on modal content)
+            if (e.target === modalElement ||
+                Array.from(closeButton).includes(e.target as Element) ||
+                (e.target as Element).closest('[data-element="close-button"]')) {
+                closeModal();
+            }
+        });
+    }
 });
 
 function openModal() {
-    console.log('open modal');
     const modal = document.querySelector('section[data-element="modal"]');
-    console.log(modal);
     modal?.classList.remove('hide');
 }
 
 
-function setModalItem(e: MouseEvent) {
+function setModalItem(e: Event) {
     const button = e.target as HTMLElement;
     const cardItem = button.closest('.card-what');
 
@@ -42,14 +46,7 @@ function setModalItem(e: MouseEvent) {
     const description = cardItem.querySelector('[data-element="description"]')?.textContent || '';
     const image = cardItem.querySelector('[data-element="image"]') as HTMLImageElement;
     const imageUrl = image?.src || '';
-
-    console.log({
-        title,
-        subtitle,
-        description,
-        imageUrl
-    });
-
+    const richDescription = cardItem.querySelector('[data-element="rich-text"]')?.innerHTML || '';
 
     const modal = document.querySelector('section[data-element="modal"]');
     if (!modal) return;
@@ -61,33 +58,15 @@ function setModalItem(e: MouseEvent) {
     const modalSubtitle = modal.querySelector('[data-element="modal-subtitle"]');
     const modalDescription = modal.querySelector('[data-element="modal-description"]');
 
-    if (modalHeading) modalHeading.textContent = title;
+    if (modalHeading) modalHeading.textContent = "More about " + title.split(' ')[0];
     if (modalImage) modalImage.src = imageUrl;
     if (modalTitle) modalTitle.textContent = title;
     if (modalSubtitle) modalSubtitle.textContent = subtitle;
-    if (modalDescription) modalDescription.textContent = description;
+    if (modalDescription) modalDescription.innerHTML = richDescription;
 }
 
 function closeModal() {
     const modal = document.querySelector('section[data-element="modal"]');
     if (!modal) return;
     modal.classList.add('hide');
-}
-
-// Add event listener to modal for background clicks
-const modalElement = document.querySelector('section[data-element="modal"]');
-if (modalElement) {
-    modalElement.addEventListener('click', (e) => {
-        // Check if click was directly on modal background (not on modal content)
-        if (e.target === modalElement) {
-            closeModal();
-        }
-    });
-}
-
-const closeButton = document.querySelector('svg[data-element="close-button"]');
-if (closeButton) {
-    closeButton.addEventListener('click', () => {
-        closeModal();
-    });
 }
