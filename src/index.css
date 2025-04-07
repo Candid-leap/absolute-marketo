@@ -403,6 +403,6 @@ select.mktoField:focus,
 }
 
 .mktoField[type="checkbox"] {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   min-height: auto !important;
 }
