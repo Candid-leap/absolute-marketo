@@ -6,15 +6,6 @@ window.Webflow.push(() => {
 
     const isShowQueryPresent = window.location.search.includes('show');
 
-    if (isShowQueryPresent) {
-        console.log('Show query detected, showing all elements');
-        removeAllFormGroupWrappers();
-        applyQueryActionOnElements();
-        showElements();
-        hideElements();
-        return;
-    }
-
     const divWithGatedPageAttribute = document.querySelector('div[is-gated-page]');
 
     if (!divWithGatedPageAttribute) {
@@ -23,7 +14,20 @@ window.Webflow.push(() => {
         return;
     }
 
-    if (divWithGatedPageAttribute.getAttribute('is-gated-page') === 'false') {
+    const isGatedPage = divWithGatedPageAttribute?.getAttribute('is-gated-page') === 'true';
+
+    if (isShowQueryPresent && isGatedPage) {
+        removeAllFormGroupWrappers(); 
+        showElements();
+        hideElements();
+        applyQueryActionOnElements();    
+        return;
+    }
+
+
+
+    // Un gated page
+    if (!isGatedPage) {
         console.log('Ungated page detected, checking webinar type');
         if (!isWebinarPage()) {
             console.log('Webinar page detected, loading form 1001');
@@ -48,11 +52,12 @@ window.Webflow.push(() => {
             removeAllFormGroupWrappers();
             showElements();
             hideElements();
-            applyQueryActionOnElements()
+      //    applyQueryActionOnElements()
         }
     }
 
-    if (divWithGatedPageAttribute.getAttribute('is-gated-page') === 'true') {
+    // Gated page
+    if (isGatedPage) {
         console.log('Gated page detected,');
         if (isLiveWebinarPage()) {
             // remvoing on demand form
@@ -137,6 +142,8 @@ function loadForm(formid: number, div: Element) {
     formElement.id = `mktoForm_${formid}`;
     div.appendChild(formElement);
     MktoForms2.loadForm('//go.absolute.com', '258-HSL-350', formid).whenReady((form: any) => {
+
+        expandLastMarketoField(`mktoForm_${formid}`);
         form.onSuccess((callback: any) => {
             // Form submission succeeded
             console.log('Form submitted successfully');
@@ -200,7 +207,10 @@ function loadForm(formid: number, div: Element) {
             form.getFormElem().hide();
             return false;
         });
+        
     });
+
+
 }
 
 function getFormId(div: HTMLElement): number {
@@ -264,4 +274,46 @@ function applyQueryActionOnElements() {
     queryActionElementsToHide.forEach((element) => {
         element.style.setProperty('display', 'none', 'important');
     });
+}
+
+function expandLastMarketoField(formId = 'mktoForm_1004') {
+    const form = document.getElementById(formId);
+    if (!form) {
+        return;
+    }
+
+    const fields = form.querySelectorAll(
+        '.mktoFormRow .mktoFieldWrap input:not([type="hidden"]):not([type="checkbox"]), .mktoFormRow .mktoFieldWrap select'
+    ) as NodeListOf<HTMLElement>;
+
+    // Skip if even number of fields
+    if (fields.length % 2 === 0) {
+        return;
+    }
+
+    const lastField = [...fields].reverse().find(field => {
+        const name = field.getAttribute('name');
+        return field.offsetParent !== null && name !== 'Opt_In__c';
+    });
+
+    if (!lastField) {
+        return;
+    }
+
+    const row = lastField.closest('.mktoFormRow');
+    if (!row) {
+        return;
+    }
+
+    const uniqueClass = 'force-span-full';
+    row.classList.add(uniqueClass);
+
+    const styleTag = document.createElement('style');
+    styleTag.textContent = `
+      .${uniqueClass} {
+        grid-column-start: 1 !important;
+        grid-column-end: -1 !important;
+      }
+    `;
+    document.head.appendChild(styleTag);
 }

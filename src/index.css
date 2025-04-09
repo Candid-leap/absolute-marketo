@@ -386,23 +386,15 @@ select.mktoField:focus,
   font-size: 1rem !important;
 }
 
-.mktoForm .mktoCheckboxList > label > a {
-  margin-left: 4px !important;
-}
-
-
-.mktoForm .mktoCheckboxList > label > a[href*="privacy"] {
-  margin-left: 4px !important;
-  margin-right: 4px !important;
-}
-
 .mktoField[type="checkbox"]:checked {
   accent-color: #30a46c !important;
   background-color: #30a46c !important;
   border-color: #30a46c !important;
 }
 
-.mktoField[type="checkbox"] {
-  transform: translateY(-4px);
-  min-height: auto !important;
+
+.mktoForm .mktoRadioList > label, .mktoForm .mktoCheckboxList > label {
+  margin: 0rem !important;
+  line-height: 1rem !important;
+  display: block !important;
 }
