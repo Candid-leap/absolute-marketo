@@ -3,6 +3,9 @@
 window.Webflow ||= [];
 window.Webflow.push(() => {
     console.log('AS Marketo Forms Script is here');
+    if (isWebinarPage()) {
+        UpdateWebinarPageTexts();
+    }
 
     const isShowQueryPresent = window.location.search.includes('show');
 
@@ -17,10 +20,10 @@ window.Webflow.push(() => {
     const isGatedPage = divWithGatedPageAttribute?.getAttribute('is-gated-page') === 'true';
 
     if (isShowQueryPresent) {
-        removeAllFormGroupWrappers(); 
+        removeAllFormGroupWrappers();
         showElements();
         hideElements();
-        applyQueryActionOnElements();    
+        applyQueryActionOnElements();
         return;
     }
 
@@ -50,7 +53,7 @@ window.Webflow.push(() => {
             removeAllFormGroupWrappers();
             showElements();
             hideElements();
-          applyQueryActionOnElements()
+            applyQueryActionOnElements()
         }
     }
 
@@ -179,7 +182,7 @@ function loadForm(formid: number, div: Element) {
             const scrollElement = document.querySelector('[as-scrollto="true"]') as HTMLElement;
             if (scrollElement instanceof HTMLElement) {
                 // disable scroll sitewide
-               // scrollElement.scrollIntoView({ behavior: 'smooth' });
+                // scrollElement.scrollIntoView({ behavior: 'smooth' });
             }
 
             window.dataLayer = window.dataLayer || [];
@@ -192,20 +195,28 @@ function loadForm(formid: number, div: Element) {
             // Return false to prevent the submission from continuing
         });
 
-       
+
         // Update submit button text if it exists
         const submitButton = div.getAttribute('form-submittext');
         if (submitButton) {
             form.getFormElem().find('button[type="submit"]').text(submitButton);
         }
-    
+
+        if (isWebinarPage()) {
+            const isLiveWebinar = isLiveWebinarPage();
+            if (isLiveWebinar) {
+                form.getFormElem().find('button[type="submit"]').text('Save your Seat');
+            } else {
+                form.getFormElem().find('button[type="submit"]').text('Watch Now');
+            }
+        }
 
         form.onSubmit((callback: any) => {
             // Hide Marketo form after submission
             form.getFormElem().hide();
             return false;
         });
-        
+
     });
 
 
@@ -314,4 +325,32 @@ function expandLastMarketoField(formId = 'mktoForm_1004') {
       }
     `;
     document.head.appendChild(styleTag);
+}
+
+
+function UpdateWebinarPageTexts() {
+    const isLiveWebinar = isLiveWebinarPage();
+
+    const formTitle = document.querySelector('div[as-webinar="form-title"]');
+    const bottomCTA = document.querySelector('div[as-webinar="bottom-cta"]');
+    const ctaButton = bottomCTA?.querySelector('div.button-text');
+
+
+    if (isLiveWebinar) {
+        if (formTitle) {
+            formTitle.innerHTML = 'Register for the webinar';
+        }
+        if (ctaButton) {
+            ctaButton.textContent = 'Save your Seat';
+        }
+    }
+    if (!isLiveWebinar) {
+
+        if (formTitle) {
+            formTitle.innerHTML = 'Watch the on-demand webinar';
+        }
+        if (ctaButton) {
+            ctaButton.textContent = 'Watch Now';
+        }
+    }
 }
