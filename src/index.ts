@@ -16,15 +16,13 @@ window.Webflow.push(() => {
 
     const isGatedPage = divWithGatedPageAttribute?.getAttribute('is-gated-page') === 'true';
 
-    if (isShowQueryPresent && isGatedPage) {
+    if (isShowQueryPresent) {
         removeAllFormGroupWrappers(); 
         showElements();
         hideElements();
         applyQueryActionOnElements();    
         return;
     }
-
-
 
     // Un gated page
     if (!isGatedPage) {
@@ -52,7 +50,7 @@ window.Webflow.push(() => {
             removeAllFormGroupWrappers();
             showElements();
             hideElements();
-      //    applyQueryActionOnElements()
+          applyQueryActionOnElements()
         }
     }
 
