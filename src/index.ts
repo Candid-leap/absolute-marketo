@@ -334,7 +334,7 @@ function UpdateWebinarPageTexts() {
     const formTitle = document.querySelector('div[as-webinar="form-title"]');
     const bottomCTA = document.querySelector('div[as-webinar="bottom-cta"]');
     const ctaButton = bottomCTA?.querySelector('div.button-text');
-
+    const formSuccessTitle = document.querySelector('div[as-webinar="form_success_title"]');
 
     if (isLiveWebinar) {
         if (formTitle) {
@@ -343,14 +343,20 @@ function UpdateWebinarPageTexts() {
         if (ctaButton) {
             ctaButton.textContent = 'Save your Seat';
         }
+        if (formSuccessTitle) {
+            formSuccessTitle.innerHTML = 'Thank you for registering';
+        }
     }
     if (!isLiveWebinar) {
 
         if (formTitle) {
-            formTitle.innerHTML = 'Watch the on-demand webinar';
+            formTitle.innerHTML = 'Sign up to watch the webinar';
         }
         if (ctaButton) {
             ctaButton.textContent = 'Watch Now';
+        }
+        if (formSuccessTitle) {
+            formSuccessTitle.innerHTML = 'Thank you';
         }
     }
 }
